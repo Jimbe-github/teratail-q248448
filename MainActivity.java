@@ -1,7 +1,6 @@
 package com.teratail.q248448;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +8,7 @@ import android.view.View;
 import android.widget.*;
 
 public class MainActivity extends AppCompatActivity {
-  private static final String[] WEEKRY_HEADER = {"月","火","水","木","金","土"};
+  private static final String[] WEEKDAY_HEADER = {"月","火","水","木","金","土"};
   private static final int TIME_COUNT = 6; //一日の最大講義数
   private Button[][] lectureSchedule;
 
@@ -22,12 +21,12 @@ public class MainActivity extends AppCompatActivity {
     scheduleSelectButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        Intent intent = SubActivity2.createStartActivityIntent( MainActivity.this, WEEKRY_HEADER, TIME_COUNT);
+        Intent intent = SubActivity2.createStartActivityIntent( MainActivity.this, WEEKDAY_HEADER, TIME_COUNT);
         startActivityForResult(intent, 0);
       }
     });
 
-    lectureSchedule = initScheduleGrid(WEEKRY_HEADER, TIME_COUNT);
+    lectureSchedule = initScheduleGrid(WEEKDAY_HEADER, TIME_COUNT);
   }
   private Button[][] initScheduleGrid(String[] columnLabels, int rowCount) {
     lectureSchedule = new Button[rowCount][columnLabels.length];
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     //一行目(曜日)
     Space space = new Space(this); //左上角
-    grid.addView(space, createLayoutParamsOfLabel());
+    grid.addView(space, createLayoutParamsOfTimeLabel());
     for(int j=0; j<columnLabels.length; j++) {
       TextView textView = new TextView(this);
       textView.setText(columnLabels[j]);
@@ -49,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     for(int i=0; i<rowCount; i++) {
       TextView timeLabel = new TextView(this);
       timeLabel.setText(""+(i+1));
-      grid.addView(timeLabel, createLayoutParamsOfLabel());
+      grid.addView(timeLabel, createLayoutParamsOfTimeLabel());
       for(int j=0; j<columnLabels.length; j++) {
         Button button = new Button(this);
         button.setText("");
@@ -61,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     }
     return lectureSchedule;
   }
-  private GridLayout.LayoutParams createLayoutParamsOfLabel() {
+  private GridLayout.LayoutParams createLayoutParamsOfTimeLabel() {
     return createLayoutParams(GridLayout.LayoutParams.WRAP_CONTENT, 0, GridLayout.CENTER);
   }
   private GridLayout.LayoutParams createLayoutParamsOfWeekday() {
